@@ -11,12 +11,13 @@ import Module6 from './components/modules/Module6'
 import Module7 from './components/modules/Module7'
 import Module8 from './components/modules/Module8'
 import Module9 from './components/modules/Module9'
+import Module10 from './components/modules/Module10'
 import Quiz from './components/Quiz'
 import Summary from './components/Summary'
 import NavBar from './components/NavBar'
 
-const MODULE_ORDER = ['home','map','module1','module2','module3','module4','module5','module6','module7','module8','module9','quiz','summary']
-const MODULE_PAGES = ['module1','module2','module3','module4','module5','module6','module7','module8','module9']
+const MODULE_ORDER = ['home','map','module1','module2','module3','module4','module5','module6','module7','module8','module9','module10','quiz','summary']
+const MODULE_PAGES = ['module1','module2','module3','module4','module5','module6','module7','module8','module9','module10']
 
 export default function App() {
   const [page, setPage] = useState('home')
@@ -64,19 +65,20 @@ export default function App() {
         />
       )}
       <main>
-        {page === 'home' && <Home onStart={() => navigate('map')} />}
-        {page === 'map' && <LearningMap completed={completed} navigate={navigate} />}
-        {page === 'module1' && <Module1 {...sharedProps} />}
-        {page === 'module2' && <Module2 {...sharedProps} />}
-        {page === 'module3' && <Module3 {...sharedProps} />}
-        {page === 'module4' && <Module4 {...sharedProps} />}
-        {page === 'module5' && <Module5 {...sharedProps} />}
-        {page === 'module6' && <Module6 {...sharedProps} />}
-        {page === 'module7' && <Module7 {...sharedProps} />}
-        {page === 'module8' && <Module8 {...sharedProps} />}
-        {page === 'module9' && <Module9 {...sharedProps} />}
-        {page === 'quiz' && <Quiz {...sharedProps} />}
-        {page === 'summary' && <Summary {...sharedProps} />}
+        {page === 'home'     && <Home onStart={() => navigate('map')} />}
+        {page === 'map'      && <LearningMap completed={completed} navigate={navigate} />}
+        {page === 'module1'  && <Module1  {...sharedProps} />}
+        {page === 'module2'  && <Module2  {...sharedProps} />}
+        {page === 'module3'  && <Module3  {...sharedProps} />}
+        {page === 'module4'  && <Module4  {...sharedProps} />}
+        {page === 'module5'  && <Module5  {...sharedProps} />}
+        {page === 'module6'  && <Module6  {...sharedProps} />}
+        {page === 'module7'  && <Module7  {...sharedProps} />}
+        {page === 'module8'  && <Module8  {...sharedProps} />}
+        {page === 'module9'  && <Module9  {...sharedProps} />}
+        {page === 'module10' && <Module10 {...sharedProps} />}
+        {page === 'quiz'     && <Quiz     {...sharedProps} />}
+        {page === 'summary'  && <Summary  {...sharedProps} />}
       </main>
     </div>
   )

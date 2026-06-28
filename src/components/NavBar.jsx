@@ -1,18 +1,19 @@
 import { useState } from 'react'
 
 const NAV_ITEMS = [
-  { id: 'map', label: '지도' },
-  { id: 'module1', label: '1. 원자' },
-  { id: 'module2', label: '2. 수소' },
-  { id: 'module3', label: '3. 산성' },
-  { id: 'module4', label: '4. 비타민C' },
-  { id: 'module5', label: '5. 생체분자' },
-  { id: 'module6', label: '6. 광합성' },
-  { id: 'module7', label: '7. 오존' },
-  { id: 'module8', label: '8. 금속' },
-  { id: 'module9', label: '9. 부식' },
-  { id: 'quiz', label: '퀴즈' },
-  { id: 'summary', label: '요약' },
+  { id: 'map',      label: '지도' },
+  { id: 'module1',  label: '1. 원자' },
+  { id: 'module2',  label: '2. 수소' },
+  { id: 'module3',  label: '3. 산성' },
+  { id: 'module4',  label: '4. 비타민C' },
+  { id: 'module5',  label: '5. 생체분자' },
+  { id: 'module6',  label: '6. 광합성' },
+  { id: 'module7',  label: '7. 오존' },
+  { id: 'module8',  label: '8. 금속' },
+  { id: 'module9',  label: '9. 부식' },
+  { id: 'module10', label: '10. 술 대사' },
+  { id: 'quiz',     label: '퀴즈' },
+  { id: 'summary',  label: '요약' },
 ]
 
 export default function NavBar({ currentPage, completed, navigate, analogyMode, setAnalogyMode, progress }) {
