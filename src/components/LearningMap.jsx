@@ -7,8 +7,9 @@ const MODULES = [
   { id: 'module6',  num: 6,  icon: '🌿', label: '광합성과 탄소 포집',     color: 'green'  },
   { id: 'module7',  num: 7,  icon: '☁️', label: '오존과 활성산소',        color: 'blue'   },
   { id: 'module8',  num: 8,  icon: '⚙️', label: '금속 결합',             color: 'purple' },
-  { id: 'module9',  num: 9,  icon: '🔴', label: '녹·산화·보호막',         color: 'red'    },
+  { id: 'module9',  num: 9,  icon: '🔴', label: '부식 메커니즘 랩',       color: 'red'    },
   { id: 'module10', num: 10, icon: '🍺', label: '술이 취하고 깨는 화학',  color: 'blue'   },
+  { id: 'module11', num: 11, icon: '⚛️', label: '양자역학 인터랙티브 랩', color: 'purple' },
 ]
 
 const colorMap = {
@@ -21,16 +22,15 @@ const colorMap = {
   red:    'border-red-500/50 text-red-400 bg-red-950/40',
 }
 
-const FLOW = ['전자', '이온', '산성', '항산화', '생체분자', '광합성', '산화', '금속/부식', '에탄올 대사']
+const FLOW = ['전자', '이온', '산성', '항산화', '생체분자', '광합성', '산화', '금속/부식', '에탄올 대사', '양자역학']
 
 export default function LearningMap({ completed, navigate }) {
-  const total = MODULES.length + 2 // +퀴즈+요약
+  const total = MODULES.length + 2
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
       <h1 className="text-3xl font-bold text-center text-cyan-400 mb-2">학습 지도</h1>
       <p className="text-center text-slate-400 text-sm mb-6">모듈을 클릭해서 시작하세요</p>
 
-      {/* Flow */}
       <div className="flex flex-wrap justify-center gap-2 mb-10">
         {FLOW.map((f, i) => (
           <span key={f} className="flex items-center gap-2">
@@ -40,17 +40,12 @@ export default function LearningMap({ completed, navigate }) {
         ))}
       </div>
 
-      {/* Module grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {MODULES.map(m => {
           const isDone = completed.includes(m.id)
-          const cls = colorMap[m.color]
           return (
-            <button
-              key={m.id}
-              onClick={() => navigate(m.id)}
-              className={`relative border rounded-2xl p-4 text-left transition-all hover:scale-[1.03] hover:shadow-lg ${cls}`}
-            >
+            <button key={m.id} onClick={() => navigate(m.id)}
+              className={`relative border rounded-2xl p-4 text-left transition-all hover:scale-[1.03] hover:shadow-lg ${colorMap[m.color]}`}>
               {isDone && (
                 <span className="absolute top-2 right-2 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
               )}
@@ -62,17 +57,13 @@ export default function LearningMap({ completed, navigate }) {
         })}
       </div>
 
-      {/* Quiz & Summary */}
       <div className="grid grid-cols-2 gap-4 mt-4">
         {[
           { id: 'quiz',    icon: '🏆', label: '퀴즈 / 미션',   color: 'border-yellow-500/50 text-yellow-400 bg-yellow-950/30' },
           { id: 'summary', icon: '📋', label: '전체 요약 카드', color: 'border-slate-500/50 text-slate-300 bg-slate-800/40'    },
         ].map(item => (
-          <button
-            key={item.id}
-            onClick={() => navigate(item.id)}
-            className={`border rounded-2xl p-4 text-left transition-all hover:scale-[1.03] ${item.color}`}
-          >
+          <button key={item.id} onClick={() => navigate(item.id)}
+            className={`border rounded-2xl p-4 text-left transition-all hover:scale-[1.03] ${item.color}`}>
             <div className="text-2xl mb-1">{item.icon}</div>
             <div className="font-semibold text-sm">{item.label}</div>
             {completed.includes(item.id) && <span className="text-xs text-green-400">✓ 완료</span>}

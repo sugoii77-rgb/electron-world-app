@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { id: 'module8',  label: '8. 금속' },
   { id: 'module9',  label: '9. 부식' },
   { id: 'module10', label: '10. 술 대사' },
+  { id: 'module11', label: '11. 양자역학' },
   { id: 'quiz',     label: '퀴즈' },
   { id: 'summary',  label: '요약' },
 ]

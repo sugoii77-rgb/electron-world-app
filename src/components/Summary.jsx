@@ -11,6 +11,13 @@ const CARDS = [
   { num: 8, icon: '🌿', title: '식물: 탄소 캡처', text: '식물은 빛으로 CO₂와 물을 탄수화물과 O₂로 바꾸는 자연의 카본 캡처 장치다.', color: 'green' },
   { num: 9, icon: '☁️', title: '오존: 산화력이 핵심', text: '오존은 산성보다 강한 산화력(전자 빼앗기)이 핵심이다. 산성과 산화력은 다른 개념이다.', color: 'purple' },
   { num: 10, icon: '🌊', title: '금속: 전자 바다 + 차이', text: '금속은 전자 바다를 공유하지만, 구리와 철의 전도율(6배 차이)과 부식성은 다르다.', color: 'slate' },
+  // ── 모듈 11 양자역학 ──
+  { num: 11, icon: '⚛️', title: '에너지 준위와 광자', text: '전자는 정해진 에너지 준위 사이에서만 이동하며, 빛을 흡수하거나 방출하며 상태를 바꾼다.', color: 'cyan' },
+  { num: 12, icon: '〰', title: '파동-입자 이중성', text: '전자는 입자처럼 검출되지만, 많은 전자를 모으면 파동의 간섭 무늬가 나타난다.', color: 'blue' },
+  { num: 13, icon: '🌀', title: '불확정성 원리', text: '위치(Δx)와 운동량(Δp)은 동시에 무한히 정확하게 알 수 없다. Δx·Δp ≥ ħ/2.', color: 'yellow' },
+  { num: 14, icon: '🔮', title: '양자 중첩', text: '중첩은 측정 전 여러 가능한 상태가 양자적으로 함께 표현되는 상태다. 단순한 무지와 다르다.', color: 'purple' },
+  { num: 15, icon: '🔗', title: '측정과 얽힘', text: '측정은 중첩을 하나의 결과로 결정한다. 얽힘은 멀리 떨어진 입자 사이의 강한 양자 상관관계다.', color: 'purple' },
+  { num: 16, icon: '💻', title: '양자 컴퓨터', text: '양자컴퓨터는 중첩과 간섭으로 정답 확률을 키운다. 모든 문제를 한 번에 푸는 마법이 아니다.', color: 'cyan' },
 ]
 
 const ENGLISH = `Today we explored how electrons, hydrogen ions, and chemical bonds explain many things from biology to materials science.
@@ -51,7 +58,7 @@ export default function Summary({ markCompleted, navigate }) {
       <div className="text-center mb-8">
         <span className="text-4xl">📋</span>
         <h1 className="text-3xl font-bold text-slate-100 mt-2 mb-2">전체 요약 카드</h1>
-        <p className="text-slate-400 text-sm">오늘 배운 핵심 10가지 — 카드를 클릭해서 복습하세요</p>
+        <p className="text-slate-400 text-sm">오늘 배운 핵심 {CARDS.length}가지 — 카드를 클릭해서 복습하세요</p>
       </div>
 
       {/* Cards grid */}
