@@ -2,6 +2,7 @@ import { useState } from 'react'
 import ModuleLayout from '../ModuleLayout'
 import MiniQuiz from '../MiniQuiz'
 import Tooltip from '../Tooltip'
+import ChemicalConnectorsSection from './ChemicalConnectorsSection'
 
 export default function Module3({ analogyMode, onNext }) {
   const [ph, setPh] = useState(7)
@@ -121,6 +122,9 @@ export default function Module3({ analogyMode, onNext }) {
           💡 한 줄 요약: 산성 = H⁺를 내놓는 성질. -COOH는 pH에 따라 H⁺를 붙이거나 내놓는 화학 커넥터.
         </p>
       </div>
+
+      {/* ── 화학 커넥터 섹션 ── */}
+      <ChemicalConnectorsSection analogyMode={analogyMode} />
 
       <MiniQuiz
         question="산성은 주로 산소(O)가 많다는 뜻이다."
