@@ -1,171 +1,94 @@
 import { useState } from 'react'
 import ModuleLayout from '../ModuleLayout'
-import MiniQuiz from '../MiniQuiz'
+import CorrosionBasics from './corrosion/CorrosionBasics'
+import SaltHumiditySimulator from './corrosion/SaltHumiditySimulator'
+import GalvanicSimulator from './corrosion/GalvanicSimulator'
+import SteelComparison from './corrosion/SteelComparison'
+import StainlessTypes from './corrosion/StainlessTypes'
+import CorrosionGallery from './corrosion/CorrosionGallery'
+import CorrosionQuiz from './corrosion/CorrosionQuiz'
+
+const TABS = [
+  { id: 'basics',   icon: '⚡', label: '기본 부식',       sub: '철 + O₂ + H₂O' },
+  { id: 'salt',     icon: '🧂', label: '습기·염분 가속',  sub: 'NaCl·전해질' },
+  { id: 'galvanic', icon: '🔋', label: '갈바닉(전식)',    sub: '이종 금속 접촉' },
+  { id: 'steel',    icon: '🔩', label: '일반강 vs SS',    sub: '수동피막 비교' },
+  { id: 'sstype',   icon: '🔬', label: 'Ferritic vs Aus', sub: '결정 구조·조성' },
+]
 
 export default function Module9({ analogyMode, onNext }) {
-  const [time, setTime] = useState(0)
-  const [running, setRunning] = useState(false)
-
-  const tick = () => {
-    setTime(t => {
-      if (t >= 100) { setRunning(false); return 100 }
-      return t + 1
-    })
-  }
-
-  const startAnim = () => {
-    if (time >= 100) setTime(0)
-    setRunning(true)
-    const id = setInterval(() => {
-      setTime(t => {
-        if (t >= 100) { clearInterval(id); setRunning(false); return 100 }
-        return t + 2
-      })
-    }, 50)
-  }
-
-  const ironRust = Math.min(time, 100)
-  const copperOx = Math.min(time * 0.4, 30) // copper forms protective layer, stops early
+  const [tab, setTab] = useState('basics')
 
   return (
-    <ModuleLayout number={9} title="녹 · 산화 · 보호막" icon="🔴" color="red" onNext={onNext} currentId="module9">
-      <section className="bg-slate-900/60 border border-slate-700/40 rounded-2xl p-5 mb-6">
-        <h2 className="text-red-400 font-bold text-lg mb-3">📖 핵심 개념</h2>
-        {analogyMode ? (
-          <div className="space-y-2 text-slate-300 text-sm leading-relaxed">
-            <p>🔴 철은 물과 산소를 만나면 녹(Fe₂O₃·xH₂O)이 생겨. 그런데 철 녹은 부서지기 쉬워서 내부를 보호하지 못해 계속 안쪽으로 파고들어!</p>
-            <p>🟢 구리는 표면에 얇은 산화구리·녹청(CuO, Cu₂(OH)₂CO₃)이 생겨. 이 층이 추가 산화를 어느 정도 막아줘!</p>
-            <p>철 녹 = 보호력 낮은 부서지는 층 / 구리 산화층 = 상대적으로 튼튼한 보호막</p>
-          </div>
-        ) : (
-          <div className="space-y-2 text-slate-300 text-sm leading-relaxed">
-            <p>철의 부식: Fe → Fe²⁺ → Fe₂O₃ (적철석). 산화층이 다공성·취약해 산소·수분이 내부로 계속 침투한다.</p>
-            <p>구리의 산화: Cu → CuO → Cu₂(OH)₂CO₃ (말라카이트, 녹청). 표면에 밀착된 부동태층이 형성되어 추가 산화를 억제한다.</p>
-            <p>알루미늄도 유사하게 Al₂O₃ 부동태층이 내부를 보호한다 (비교 참고용).</p>
-          </div>
-        )}
-      </section>
-
-      {/* Animation */}
-      <section className="bg-slate-900/60 border border-slate-700/40 rounded-2xl p-5 mb-6">
-        <h2 className="text-red-400 font-bold text-lg mb-4">🎮 부식 시뮬레이션</h2>
-
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          {/* Iron */}
-          <div>
-            <div className="text-center text-sm font-bold text-slate-300 mb-2">🔩 철 (Fe)</div>
-            <div className="h-32 bg-slate-800 rounded-xl overflow-hidden relative">
-              {/* Iron base */}
-              <div className="absolute bottom-0 left-0 right-0 h-full bg-slate-600" />
-              {/* Rust spreading from outside in */}
-              <div
-                className="absolute top-0 left-0 right-0 transition-all duration-100"
-                style={{ height: `${ironRust}%`, background: 'linear-gradient(to bottom, #92400e, #b45309, #d97706)' }}
-              />
-              <div className="absolute inset-0 flex items-center justify-center text-xs font-bold">
-                {ironRust < 30 && <span className="text-slate-300">표면</span>}
-                {ironRust >= 30 && ironRust < 70 && <span className="text-orange-300">녹 진행 중...</span>}
-                {ironRust >= 70 && <span className="text-red-300">내부까지 부식!</span>}
-              </div>
-            </div>
-            <div className="text-xs text-red-400 text-center mt-2">
-              녹 진행: {ironRust}% — 내부 보호 안됨
-            </div>
-          </div>
-
-          {/* Copper */}
-          <div>
-            <div className="text-center text-sm font-bold text-slate-300 mb-2">🔶 구리 (Cu)</div>
-            <div className="h-32 bg-slate-800 rounded-xl overflow-hidden relative">
-              {/* Copper base */}
-              <div className="absolute bottom-0 left-0 right-0 h-full bg-orange-800" />
-              {/* Thin protective layer */}
-              <div
-                className="absolute top-0 left-0 right-0 transition-all duration-100"
-                style={{
-                  height: `${copperOx}%`,
-                  background: 'linear-gradient(to bottom, #047857, #059669, #10b981)',
-                  maxHeight: '30%'
-                }}
-              />
-              <div className="absolute inset-0 flex items-center justify-center text-xs font-bold">
-                {copperOx < 5 && <span className="text-orange-300">표면</span>}
-                {copperOx >= 5 && copperOx < 25 && <span className="text-green-300">보호막 생성 중</span>}
-                {copperOx >= 25 && <span className="text-emerald-300">보호막 완성! 내부 안전</span>}
-              </div>
-            </div>
-            <div className="text-xs text-green-400 text-center mt-2">
-              보호층: {Math.round(copperOx)}% — 내부 보호됨
-            </div>
-          </div>
-        </div>
-
-        <div className="flex gap-3">
-          <button
-            onClick={startAnim}
-            disabled={running}
-            className="flex-1 py-2.5 bg-red-900/50 border border-red-700/50 text-red-300 rounded-xl text-sm hover:bg-red-900/70 disabled:opacity-50 transition-colors font-medium"
-          >
-            {running ? '진행 중...' : '⏯️ 시뮬레이션 시작'}
-          </button>
-          <button
-            onClick={() => { setTime(0); setRunning(false) }}
-            className="px-4 py-2 bg-slate-700 border border-slate-600 text-slate-300 rounded-xl text-sm hover:bg-slate-600"
-          >
-            초기화
-          </button>
-        </div>
-
-        {time > 0 && (
-          <div className="mt-3 text-xs text-slate-500 text-center">
-            💧 + O₂ 노출 시간: {time}%
-          </div>
-        )}
-      </section>
-
-      {/* Comparison cards */}
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        <div className="bg-red-950/30 border border-red-700/40 rounded-xl p-4 text-sm">
-          <div className="text-red-300 font-bold mb-2">🔴 철 녹 (Fe₂O₃)</div>
-          <div className="text-xs text-slate-400 space-y-1">
-            <div>• 다공성, 부서지기 쉬움</div>
-            <div>• 내부 산소·수분 차단 안됨</div>
-            <div>• 부식 계속 진행</div>
-            <div>• 보호력: 낮음 ❌</div>
-          </div>
-        </div>
-        <div className="bg-green-950/30 border border-green-700/40 rounded-xl p-4 text-sm">
-          <div className="text-green-300 font-bold mb-2">🟢 구리 녹청</div>
-          <div className="text-xs text-slate-400 space-y-1">
-            <div>• 밀착된 산화층 형성</div>
-            <div>• 내부와 외부 사이 장벽</div>
-            <div>• 추가 산화 억제</div>
-            <div>• 보호력: 상대적으로 높음 ✓</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Examples */}
-      <section className="bg-slate-900/60 border border-slate-700/40 rounded-2xl p-4 mb-6 text-xs">
-        <p className="text-slate-400 font-bold mb-2">💡 실생활 예시</p>
-        <div className="space-y-1 text-slate-400">
-          <p>🏛️ 구리 동상: 세월이 지나도 녹청층이 생기고 추가 부식 느려짐</p>
-          <p>🚗 철제 차체: 방치하면 내부까지 녹이 파고들어 구조 손상</p>
-          <p>🛡️ 아연 도금: 철 표면에 아연을 입혀 희생 산화로 철을 보호</p>
-        </div>
-      </section>
-
-      <div className="bg-red-950/40 border border-red-800/40 rounded-xl p-4 mb-2">
-        <p className="text-red-300 text-sm font-medium">
-          💡 한 줄 요약: 철 녹은 다공성이라 내부 보호가 안 되고, 구리 산화층은 상대적으로 밀착 보호막이 된다.
+    <ModuleLayout
+      number={9}
+      title="부식 메커니즘 랩"
+      icon="🔴"
+      color="red"
+      onNext={onNext}
+      currentId="module9"
+    >
+      {/* Header summary */}
+      <section className="bg-slate-900/60 border border-slate-700/40 rounded-2xl p-5 mb-5">
+        <h2 className="text-red-400 font-bold text-lg mb-2">🔴 부식 메커니즘 랩</h2>
+        <p className="text-slate-300 text-sm leading-relaxed">
+          {analogyMode
+            ? '녹은 그냥 갈색으로 변하는 게 아냐. 철 표면에서 작은 전기 배터리가 돌고, 습기와 소금이 반응을 빠르게 하고, 다른 금속이 옆에 있으면 전식이 생겨. 스테인리스가 더 잘 버티는 이유도 있고, 스테인리스 종류마다 성능도 달라!'
+            : '금속 부식은 전기화학 산화-환원 반응이다. 환경 인자(습기, 염화물, 온도)와 재료 특성(조성, 결정 구조, 수동피막)이 부식 거동을 결정한다. 이 모듈에서는 5가지 핵심 메커니즘을 인터랙티브로 탐구한다.'}
         </p>
+      </section>
+
+      {/* Tab navigation */}
+      <div className="flex flex-wrap gap-2 mb-5">
+        {TABS.map(t => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-medium transition-all ${
+              tab === t.id
+                ? 'border-red-500/70 bg-red-950/40 text-red-300 shadow-[0_0_10px_rgba(239,68,68,0.25)]'
+                : 'border-slate-700 text-slate-400 hover:border-slate-600 hover:text-slate-200'
+            }`}
+          >
+            <span>{t.icon}</span>
+            <span className="hidden sm:inline">{t.label}</span>
+            <span className="sm:hidden">{t.label.split(' ')[0]}</span>
+            {tab === t.id && <span className="hidden md:inline text-red-500/70">— {t.sub}</span>}
+          </button>
+        ))}
       </div>
 
-      <MiniQuiz
-        question="철의 녹(Fe₂O₃)은 내부 부식을 잘 막는 보호막 역할을 한다."
-        answer="X"
-        explanation="철 녹은 다공성·취약하여 산소와 수분이 내부로 계속 침투한다. 구리 산화층과 달리 보호막 역할이 낮다."
-      />
+      {/* Tab content */}
+      {tab === 'basics'   && <CorrosionBasics        analogyMode={analogyMode} />}
+      {tab === 'salt'     && <SaltHumiditySimulator  analogyMode={analogyMode} />}
+      {tab === 'galvanic' && <GalvanicSimulator       analogyMode={analogyMode} />}
+      {tab === 'steel'    && <SteelComparison         analogyMode={analogyMode} />}
+      {tab === 'sstype'   && <StainlessTypes          analogyMode={analogyMode} />}
+
+      {/* Gallery & Quiz always visible below */}
+      <div className="mt-6 space-y-6">
+        <CorrosionGallery />
+        <CorrosionQuiz />
+
+        {/* Summary card */}
+        <div
+          className="rounded-2xl p-5 border"
+          style={{
+            background: 'linear-gradient(135deg, #1a0505 0%, #0f172a 50%, #0a0a1a 100%)',
+            borderColor: '#ef444450',
+            boxShadow: '0 0 20px #ef444418',
+          }}
+        >
+          <h3 className="text-red-400 font-bold text-base mb-3">📌 핵심 정리</h3>
+          <div className="text-sm text-slate-300 leading-relaxed space-y-1.5">
+            <p><strong className="text-orange-300">① 기본 부식:</strong> 철 부식은 전기화학 반응 — 양극(Fe → Fe²⁺)과 음극(O₂ + H₂O → OH⁻) 쌍이 필요하다.</p>
+            <p><strong className="text-blue-300">② 습기·염분:</strong> 물은 전해질 경로를 만들고, NaCl은 전도성을 높이며 Cl⁻는 피막을 손상시켜 부식을 가속한다.</p>
+            <p><strong className="text-purple-300">③ 갈바닉:</strong> 이종 금속 + 전해질 + 전위차 → 활성 금속(양극)이 먼저 희생된다. 면적비도 중요하다.</p>
+            <p><strong className="text-cyan-300">④ 일반강 vs SS:</strong> 스테인리스는 Cr₂O₃ 수동피막으로 보호된다. 하지만 Cl⁻ 환경에서는 점부식이 생길 수 있다.</p>
+            <p><strong className="text-violet-300">⑤ Ferritic vs Austenitic:</strong> Austenitic은 FCC + Cr+Ni(+Mo) 덕분에 일반적 환경에서 우수하지만, Ferritic이 SCC 저항 등에서 유리한 경우도 있다. 환경별 선택이 중요하다.</p>
+          </div>
+        </div>
+      </div>
     </ModuleLayout>
   )
 }
